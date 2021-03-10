@@ -4,9 +4,9 @@
 
 ## Nette installation
 
-```yaml
+```neon
 extensions:
-    hydrator: Nettrine\Hydrator\DI\HydratorExtension
+	hydrator: Nettrine\Hydrator\DI\HydratorExtension
 ```
 
 ## Basic usage
@@ -35,18 +35,19 @@ Used to read from or write to an object's property.
 
 ```php
 class CustomPropertyAccessor implements IPropertyAccessor {
-	
+
 	public function get(object $object, string $property) { ... }
-	
+
 	public function set(object $object, string $property, $value): void { ... }
-	
+
 }
 ```
 
 Nette registration:
-```yaml
+
+```neon
 hydrator:
-    propertyAccessor: CustomPropertyAccessor
+	propertyAccessor: CustomPropertyAccessor
 ```
 
 ## Adapters
@@ -57,15 +58,15 @@ All the adapters have to be registered via `addFieldAdapter` or `addArrayAdapter
 
 In Nette:
 
-```yaml
+```neon
 hydrator:
-    adapters:
-        fields:
-            - Nettrine\DoctrineHydration\Adapters\CallbackFieldAdapter
-            - Nettrine\DoctrineHydration\Adapters\TargetEntityFieldAdapter
-        array:
-            - Nettrine\DoctrineHydration\Adapters\JoinArrayAdapter
-            - Nettrine\DoctrineHydration\Adapters\ManyToOneAdapter
+	adapters:
+		fields:
+			- Nettrine\DoctrineHydration\Adapters\CallbackFieldAdapter
+			- Nettrine\DoctrineHydration\Adapters\TargetEntityFieldAdapter
+		array:
+			- Nettrine\DoctrineHydration\Adapters\JoinArrayAdapter
+			- Nettrine\DoctrineHydration\Adapters\ManyToOneAdapter
 
 ```
 
@@ -80,9 +81,9 @@ All object relations are converted to an ID.
 ```php
 $entity = new Assoc class {
 	public $id = 42;
-	
+
 	public $foo = 'foo';
-	
+
 	/**
 	 * @ManyToOne(targetEntity="Assoc")
 	 */
@@ -106,9 +107,9 @@ Object association is converted to an array.
 ```php
 $entity = new Assoc class {
 	public $id = 42;
-	
+
 	public $foo = 'foo';
-	
+
 	/**
 	 * @ManyToOne(targetEntity="Assoc")
 	 */
@@ -143,7 +144,7 @@ $hydrator->toFields($obj, [
 ], [
 	'callbacks' => [
 		'name' => function (FieldArgs $args) {
-		    $args->value = ucfirst($args->value);
+			$args->value = ucfirst($args->value);
 		},
 	] 
 ]);
@@ -193,18 +194,17 @@ class CustomFieldAdapter implements IFieldAdapter {
 		
 		$args->value = $image;
 	}
-
 }
 
 ```
 
 Registration in Nette:
 
-```yaml
+```neon
 hydrator:
-    adapters:
-        fields: 
-            - CustomFieldAdapter
+	adapters:
+		fields: 
+			- CustomFieldAdapter
 ```
 
 Usage:
